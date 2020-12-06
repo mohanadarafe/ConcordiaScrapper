@@ -21,3 +21,10 @@ scrapy crawl concordia -a limit=100
 
 limit: upper bound on the number of files to download
 ```
+
+If you want to run the test file I have that parses my personal website:
+```
+scrapy crawl test -a limit=15
+
+limit: upper bound on the number of files to download
+```

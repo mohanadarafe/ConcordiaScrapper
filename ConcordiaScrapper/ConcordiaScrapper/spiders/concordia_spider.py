@@ -2,38 +2,37 @@ import scrapy, logging, os, shutil
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.exceptions import CloseSpider
+from scrapy.crawler import CrawlerProcess
 
-class TestScrapper(CrawlSpider):
-    PATH = "spiders/concordia_results"
-    if not os.path.isdir(PATH):
-        os.makedirs(PATH)
-    else:
-        shutil.rmtree(PATH)
-        os.makedirs(PATH)
+class ConcordiaScrapper(CrawlSpider):
+
+    file_limit = 100
+    def __init__(self, limit=100, **kwargs):
+        super().__init__(**kwargs)
+        self.file_limit = limit
 
     name = "concordia"
-    start_urls = ['https://www.concordia.ca/']
-    rules = [Rule(callback='parse', follow=True)]
+    start_urls = [
+        'https://concordia.ca/',
+    ]
+    process = CrawlerProcess(settings={
+        "CONCURRENT_REQUESTS": 1,
+        "ROBOTSTXT_OBEY": True,
+        "CLOSESPIDER_ITEMCOUNT": int(file_limit),
+        "LOG_LEVEL": 'INFO',
+    })
+    rules = (
+        Rule(LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', )),
+             callback='parse_item', follow=True),
+    )
+    docNumber = 0
 
-    def __init__(self, limit=100, **kwargs):
-        assert int(limit) > 0, "Please enter a valid limit!"
-        self.limit = limit
-        self.extractor = LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', ))
-        self.docNumber = 0
-        super().__init__(**kwargs)
+    def parse_item(self, response):
+        if self.docNumber >= int(self.file_limit):
+            raise CloseSpider("Limit reached.")
 
-    def parse(self, response):
-        LIMIT = int(self.limit)
-
-        if(self.docNumber < LIMIT):
-            links = self.extractor.extract_links(response)
-            for index, link in enumerate(links):
-                if(self.docNumber < LIMIT):
-                    yield scrapy.Request(url = link.url, callback=self.link_to_html)
-        else:
-            raise CloseSpider('Limit reached.')
-
-    def link_to_html(self, response):
+        url = response.url
+        self.logger.info(f'Scrapping: {url}')
         with open(f'spiders/concordia_results/{self.docNumber}.html', 'wb') as f:
             f.write(response.body)
-            self.docNumber += 1
+        self.docNumber += 1
