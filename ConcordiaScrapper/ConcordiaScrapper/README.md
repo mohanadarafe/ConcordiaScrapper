@@ -13,7 +13,7 @@ conda activate scrapper
 ### Run
 You can run the crawler using the following command:
 ```
-scrapy crawler concordia -a limit=100
+scrapy crawl test -a limit=100
 
 limit: upper bound on the number of files to download
 ```
