@@ -14,7 +14,7 @@ conda activate scrapper
 The following commands are used to run different parts of the scrapper.
 
 ### Crawler
-The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & build an inverted index. You can see the inverted index at: `results.json`.
+The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & build an inverted index.
 
 ```
 python run.py
