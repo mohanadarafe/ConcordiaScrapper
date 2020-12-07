@@ -8,13 +8,9 @@ from nltk import word_tokenize
 
 class ConcordiaScrapper(CrawlSpider):
     file_limit = 100 #default limit = 100
-    def __init__(self, limit=100, **kwargs):
-        super().__init__(**kwargs)
-        self.file_limit = limit
-
     name = "concordia"
     start_urls = [
-        'https://concordia.ca/',
+        'https://concordia.ca',
     ]
     visited_urls = set()
     process = CrawlerProcess(settings={
@@ -24,13 +20,15 @@ class ConcordiaScrapper(CrawlSpider):
         "LOG_LEVEL": "INFO"
     })
     rules = (
-        Rule(LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', )),
+        Rule(LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', r'^(https://www.concordia.ca/fr).+'), ),
              callback='parse_item', follow=True),
     )
-    docNumber = 0
+    docID = 0
+    inverted_index = dict()
 
     def parse_item(self, response):
-        if self.docNumber >= int(self.file_limit):
+        if self.docID >= int(self.file_limit):
+            yield self.inverted_index
             raise CloseSpider("Limit reached.")
 
         url = response.url
@@ -44,9 +42,23 @@ class ConcordiaScrapper(CrawlSpider):
         soup = BeautifulSoup(response.body, "lxml")
         text = word_tokenize(soup.get_text())
         text = [token for token in text if token not in string.punctuation]
-        self.docNumber += 1
+        self.docID += 1
+        self.inverted_index_builder(self.inverted_index, self.get_tf(text))
 
-        yield {
-            "url": url,
-            "text": text
-        }
+    def get_tf(self, document):
+        dictionary = dict()
+        for tokens in document:
+            if tokens not in dictionary:
+                dictionary[tokens] = 1
+            else:
+                dictionary[tokens] += 1
+        return dictionary
+
+    def inverted_index_builder(self, dictionary, token_tf):
+        for token in token_tf.keys():
+            pair = ((self.docID, token_tf[token]))
+            if token not in dictionary:
+                dictionary[token] = [1, [pair]]
+            else:
+                dictionary[token][1].append(pair)
+                dictionary[token][0] += 1

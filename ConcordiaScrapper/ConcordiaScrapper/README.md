@@ -17,9 +17,10 @@ The following commands are used to run different parts of the scrapper.
 The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & store the HTML file inside `spider/concordia_results`.
 
 ```
-scrapy crawl concordia -a limit=100
+scrapy crawl concordia -a limit=5 -O results.json
 
-limit: upper bound on the number of files to download
+-a limit: upper bound on the number of files to download
+-O *.json: name of output file with URL/text content
 ```
 
 If you want to run the test file I have that parses my personal website:
