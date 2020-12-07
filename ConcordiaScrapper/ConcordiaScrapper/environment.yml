@@ -5,3 +5,5 @@ dependencies:
 - python>=3.8
 - scrapy
 - protego
+- beautifulsoup4
+- nltk
