@@ -61,4 +61,5 @@ class ConcordiaScrapper(CrawlSpider):
                 dictionary[token] = [1, [pair]]
             else:
                 dictionary[token][1].append(pair)
+                dictionary[token][1] = sorted(dictionary[token][1], key = lambda x: x[1], reverse=True)
                 dictionary[token][0] += 1
