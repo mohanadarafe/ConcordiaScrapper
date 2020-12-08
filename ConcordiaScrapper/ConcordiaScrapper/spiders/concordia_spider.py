@@ -1,4 +1,4 @@
-import scrapy, logging, os, shutil, string
+import scrapy, logging, os, shutil, string, json
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.exceptions import CloseSpider
@@ -13,12 +13,6 @@ class ConcordiaScrapper(CrawlSpider):
         'https://concordia.ca',
     ]
     visited_urls = set()
-    process = CrawlerProcess(settings={
-        "CONCURRENT_REQUESTS": 1,
-        "ROBOTSTXT_OBEY": True,
-        "CLOSESPIDER_ITEMCOUNT": int(file_limit),
-        "LOG_LEVEL": "INFO"
-    })
     rules = (
         Rule(LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', r'^(https://www.concordia.ca/fr).+'), ),
              callback='parse_item', follow=True),
@@ -28,24 +22,29 @@ class ConcordiaScrapper(CrawlSpider):
 
     def parse_item(self, response):
         if self.docID >= int(self.file_limit):
-            yield self.inverted_index
+            if os.stat("result.json").st_size == 0:
+                self.save_urls()
+                yield self.inverted_index
             raise CloseSpider("Limit reached.")
 
         url = response.url
         if url in self.visited_urls:
             self.logger.info(f'Already scrapped: {url}')
             yield
-        else:
-            self.visited_urls.add(url)
 
         self.logger.info(f'Scrapping: {url}')
         soup = BeautifulSoup(response.body, "lxml")
         text = word_tokenize(soup.get_text())
         text = [token for token in text if token not in string.punctuation]
+
         self.docID += 1
+        self.visited_urls.add((url, len(text), self.docID))
         self.inverted_index_builder(self.inverted_index, self.get_tf(text))
 
     def get_tf(self, document):
+        '''
+        Gets the term-frequency of each document
+        '''
         dictionary = dict()
         for tokens in document:
             if tokens not in dictionary:
@@ -55,7 +54,15 @@ class ConcordiaScrapper(CrawlSpider):
         return dictionary
 
     def inverted_index_builder(self, dictionary, token_tf):
+        '''
+        Builds the inverted index in the following format
+        term -> [df, [(tf, docID), (tf, docID), ...]]
+        The postings list is sorted in terms of tf.
+        '''
         for token in token_tf.keys():
+            if(token in dictionary and dictionary[token][0] >= 50):
+                continue
+
             pair = ((self.docID, token_tf[token]))
             if token not in dictionary:
                 dictionary[token] = [1, [pair]]
@@ -63,3 +70,11 @@ class ConcordiaScrapper(CrawlSpider):
                 dictionary[token][1].append(pair)
                 dictionary[token][1] = sorted(dictionary[token][1], key = lambda x: x[1], reverse=True)
                 dictionary[token][0] += 1
+
+    def save_urls(self):
+        dictionary = dict()
+        for url, docLength, docID in self.visited_urls:
+            dictionary[docID] = (url, docLength)
+
+        with open ('visited_urls.json', 'w') as f:
+            json.dump(dictionary, f)
