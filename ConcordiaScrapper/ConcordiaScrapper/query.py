@@ -31,7 +31,7 @@ def parse_query(query: str, queryType: str, scoreType: str):
     start = time.time()
     if queryType == "1":
         assert len(query.split(" ")) == 1, "You have demanded a SINGLE query but you have more than one term."
-        found = single_term_query(query, scoreType, inverted_index, URLs)
+        found = single_term_query(query.lower(), scoreType, inverted_index, URLs)
     # elif queryType == "2":
     #     assert len(query.split(" ")) > 1, "You have demanded an AND query but you have only entered one term."
     #     and_term_query(query, inverted_index, tf_dict_list)

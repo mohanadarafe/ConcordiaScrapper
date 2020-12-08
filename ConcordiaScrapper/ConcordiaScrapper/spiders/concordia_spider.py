@@ -14,8 +14,17 @@ class ConcordiaScrapper(CrawlSpider):
     ]
     visited_urls = set()
     rules = (
-        Rule(LinkExtractor(deny=(r'^(?!https://www.concordia.ca).+', r'^(https://www.concordia.ca/fr).+'), ),
-             callback='parse_item', follow=True),
+        Rule(
+            LinkExtractor(
+                deny=(
+                    r'^(?!https://www.concordia.ca).+',  # stay in concordia domain
+                    r'^(https://www.concordia.ca/fr).+', # don't go to french page
+                    r'(page=[1-9][0-9]+)$',              # don't go over pages 7 (empty pages)   
+                    r'(sort=[A-z]+)$'                    # don't click on 'sort by'
+                ), 
+            ),
+            callback='parse_item', 
+            follow=True),
     )
     docID = 0
     inverted_index = dict()
@@ -32,10 +41,10 @@ class ConcordiaScrapper(CrawlSpider):
             self.logger.info(f'Already scrapped: {url}')
             yield
 
-        self.logger.info(f'Scrapping: {url}')
+        self.logger.info(f'Scrapping doc #{self.docID + 1}: {url}')
         soup = BeautifulSoup(response.body, "lxml")
         text = word_tokenize(soup.get_text())
-        text = [token for token in text if token not in string.punctuation]
+        text = [token.lower() for token in text if token not in string.punctuation]
 
         self.docID += 1
         self.visited_urls.add((url, len(text), self.docID))

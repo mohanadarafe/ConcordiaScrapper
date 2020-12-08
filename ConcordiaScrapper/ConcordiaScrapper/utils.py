@@ -68,18 +68,20 @@ def BM25(df, tf, Ld, Lave, N, b=0.5, k=10) -> float:
     return product1 * product2
 
 def tf_idf(tf, df, N):
-    urls = open_dictionary_file("visited_urls.json")
-    idf_score = idf(N, idf)
+    return tf*idf(N, df)
 
 def single_query_compute(scoreType: str, postings_list: list, URLs: dict):
     scores = []
+    isBM25 = scoreType == "1"
 
-    if scoreType == "1":
-        for docID, tf in postings_list[1]:
+    for docID, tf in postings_list[1]:
             df = postings_list[0]
             L_d = URLs[str(docID)][1]
-            rsv_score = BM25(df, tf, L_d, get_avg_doc_length(), len(URLs))
-            scores.append((docID , rsv_score))
+            L_ave = get_avg_doc_length()
+            N = len(URLs)
+
+            score = BM25(df, tf, L_d, L_ave, N) if isBM25 else tf_idf(tf, df, N)
+            scores.append((docID , score))
 
     scores = sorted(scores, reverse=True, key = lambda x: x[1]) 
     top = 15 if (len(scores) > 15) else len(scores)
