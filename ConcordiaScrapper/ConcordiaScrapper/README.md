@@ -14,13 +14,10 @@ conda activate scrapper
 The following commands are used to run different parts of the scrapper.
 
 ### Crawler
-The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & store the HTML file inside `spider/concordia_results`.
+The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & build an inverted index.
 
 ```
-scrapy crawl concordia -a limit=5 -O results.json
-
--a limit: upper bound on the number of files to download
--O *.json: name of output file with URL/text content
+python run.py
 ```
 
 If you want to run the test file I have that parses my personal website:
