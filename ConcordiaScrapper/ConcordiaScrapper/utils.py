@@ -17,7 +17,7 @@ def open_dictionary_file(file: str) -> dict:
 
     return dictionary
 
-def display_results(scores: list, URLs: dict):
+def display_results(scores: list, URLs: dict, isORQuery = False):
     '''
     Displays the top 15 scores.
     '''
@@ -80,35 +80,44 @@ def BM25(df, tf, Ld, Lave, N, b=0.5, k=10) -> float:
 def tf_idf(tf, df, N):
     return tf*idf(N, df)
 
-def single_query_compute(scoreType: str, postings_list: list, URLs: dict):
+def single_query_compute(postings_list: list, URLs: dict):
     scores = []
-    isBM25 = scoreType == "1"
- 
     for docID, tf in postings_list[1]:
             df = postings_list[0]
             L_d = URLs[str(docID)][1]
             L_ave = get_avg_doc_length()
             N = len(URLs)
 
-            score = BM25(df, tf, L_d, L_ave, N) if isBM25 else tf_idf(tf, df, N)
+            score = tf_idf(tf, df, N)
             scores.append((docID , score))
 
     scores = sorted(scores, reverse=True, key = lambda x: x[1]) 
     display_results(scores, URLs)
 
-def and_query_compute(query_terms: list, scoreType: str, and_documents: dict, inverted_index: dict, URLs: dict):
-    isBM25 = scoreType == "1"
+def and_query_compute(query_terms: list, and_documents: dict, inverted_index: dict, URLs: dict):
     scores = [(0, 0)]*len(and_documents)
 
     index = 0
     for docID in and_documents:
         for query in query_terms:
             df = inverted_index[query][0]
-            L_d = URLs[str(docID)][1]
-            L_ave = get_avg_doc_length()
             N = len(URLs)
+            score = tf_idf(and_documents[docID], df, N)
+            scores[index] = (docID, scores[index][1] + score)
+        index += 1
 
-            score = BM25(df, and_documents[docID], L_d, L_ave, N) if isBM25 else tf_idf(tf, df, N)
+    scores = sorted(scores, reverse=True, key = lambda x: x[1])
+    display_results(scores, URLs)
+
+def or_query_compute(query_terms: list, or_documents: list, inverted_index: dict, URLs: dict):
+    scores = [(0, 0)]*len(or_documents)
+
+    index = 0
+    for docID in or_documents:
+        for query in query_terms:
+            df = inverted_index[query][0]
+            N = len(URLs)
+            score = tf_idf(or_documents[docID], df, N)
             scores[index] = (docID, scores[index][1] + score)
         index += 1
 

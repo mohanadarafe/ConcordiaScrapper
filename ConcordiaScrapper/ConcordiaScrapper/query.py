@@ -1,22 +1,22 @@
 import os, time, utils
 
-def single_term_query(query: str, scoreType: str, inverted_index: dict, URLs: dict):
+def single_term_query(query: str, inverted_index: dict, URLs: dict):
     '''
-    The following function inputs a query term, score type, the inverted index and the
-    URLs per document. We compute the score for the query in each document it occurs 
+    The following function inputs a query term, the inverted index and the
+    URLs per document. We compute the tf.idf for the query in each document it occurs 
     in & display the output.
     '''
     if query in inverted_index:
         postings_list = inverted_index[query]
-        utils.single_query_compute(scoreType, postings_list, URLs)
+        utils.single_query_compute(postings_list, URLs)
     else:
         print(f"The query term \"{query}\" was not found!")
 
-def and_term_query(query_terms: str, scoreType: str, inverted_index: dict, URLs: dict):
+def and_term_query(query_terms: str, inverted_index: dict, URLs: dict):
     '''
-    The following function inputs a query term, score type, the inverted index and the
+    The following function inputs a query term, the inverted index and the
     URLs per document. We compute the intersection of each term in the query & sum the 
-    score values of the terms in each document.
+    tf.idf values of the terms in each document.
     '''
     postings_of_query_terms = []
     terms = [query.lower() for query in query_terms.split()]
@@ -30,7 +30,7 @@ def and_term_query(query_terms: str, scoreType: str, inverted_index: dict, URLs:
             print(f"The query term \"{query}\" was not found!")
 
     if len(queries) == 1:
-        single_term_query(queries[0], scoreType, inverted_index, URLs)
+        single_term_query(queries[0], inverted_index, URLs)
     else:
         docs_dictionary = dict()
         and_postings = dict()
@@ -42,9 +42,40 @@ def and_term_query(query_terms: str, scoreType: str, inverted_index: dict, URLs:
                 else:
                     and_postings[docID] = tf
 
-        utils.and_query_compute(queries, scoreType, and_postings, inverted_index, URLs)
+        utils.and_query_compute(queries, and_postings, inverted_index, URLs)
 
-def parse_query(query: str, queryType: str, scoreType: str):
+def or_term_query(query_terms: str, inverted_index: dict, URLs: dict):
+    '''
+    The following function inputs a query term, the inverted index and the
+    URLs per document. We compute the union of each term in the query & sum the 
+    tf.idf values of the terms in each document.
+    '''
+    postings_of_query_terms = []
+    terms = [query.lower() for query in query_terms.split()]
+    queries = []
+
+    for query in terms:
+        if query in inverted_index:
+            queries.append(query)
+            postings_of_query_terms.append(list(inverted_index[query][1]))
+        else:
+            print(f"The query term \"{query}\" was not found!")
+
+    if len(queries) == 1:
+        single_term_query(queries[0], inverted_index, URLs)
+    else:
+        or_postings = dict()
+
+        for postings in postings_of_query_terms:
+            for docID, tf in postings:
+                if docID not in or_postings:
+                    or_postings[docID] = tf
+                else:
+                    or_postings[docID] += tf
+
+        utils.or_query_compute(queries, or_postings, inverted_index, URLs)
+
+def parse_query(query: str, queryType: str):
     '''
     The following function decides which type of query algorithm we should run based on the user input.
     1 - SINGLE
@@ -60,13 +91,13 @@ def parse_query(query: str, queryType: str, scoreType: str):
     start = time.time()
     if queryType == "1":
         assert len(query.split(" ")) == 1, "You have demanded a SINGLE query but you have more than one term."
-        single_term_query(query.lower(), scoreType, inverted_index, URLs)
+        single_term_query(query.lower(), inverted_index, URLs)
     elif queryType == "2":
         assert len(query.split(" ")) > 1, "You have demanded an AND query but you have only entered one term."
-        and_term_query(query, scoreType, inverted_index, URLs)
-    # elif queryType == "3":
-    #     assert len(query.split(" ")) > 1, "You have demanded an AND query but you have only entered one term."
-    #     or_term_query(query, inverted_index, tf_dict_list)
+        and_term_query(query, inverted_index, URLs)
+    elif queryType == "3":
+        assert len(query.split(" ")) > 1, "You have demanded an OR query but you have only entered one term."
+        or_term_query(query, inverted_index, URLs)
     # elif queryType == "4":
     #     ranked_term_query(query, inverted_index, tf_dict_list)
     end = time.time()
@@ -78,12 +109,6 @@ def _prompt_user():
     '''
     keepGoing = True
     while (keepGoing):
-
-        scoreType = input("\nPlease enter a score type: [1] BM25 [2] tf.idf: ")
-        while(scoreType not in ["1", "2"]):
-            print("Please enter a valid score type")
-            scoreType = input("\nPlease enter a score type: [1] BM25 [2] tf.idf: ")
-
         queryType = input("Please enter a query type: [1] SINGLE [2] AND [3] OR [4] RANKED: ")
         while(queryType not in ["1", "2", "3", "4"]): 
             print("Please enter a valid query type")
@@ -94,7 +119,7 @@ def _prompt_user():
             print("Please enter a valid query type")
             queryType = input("Please enter a query type: ")
 
-        parse_query(query, queryType, scoreType)
+        parse_query(query, queryType)
 
         inp = input("Would you like to submit another query? [y/n] ")
         while(inp not in ["y", "n"]):
