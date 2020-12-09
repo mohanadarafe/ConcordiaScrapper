@@ -44,11 +44,13 @@ def and_term_query(query_terms: str, inverted_index: dict, URLs: dict):
 
         utils.and_query_compute(queries, and_postings, inverted_index, URLs)
 
-def or_term_query(query_terms: str, inverted_index: dict, URLs: dict):
+def or_term_query(query_terms: str, inverted_index: dict, URLs: dict, isRanked = False):
     '''
     The following function inputs a query term, the inverted index and the
     URLs per document. We compute the union of each term in the query & sum the 
     tf.idf values of the terms in each document.
+
+    If the query is a RANKED index, we compute the BM25 score.
     '''
     postings_of_query_terms = []
     terms = [query.lower() for query in query_terms.split()]
@@ -61,11 +63,10 @@ def or_term_query(query_terms: str, inverted_index: dict, URLs: dict):
         else:
             print(f"The query term \"{query}\" was not found!")
 
-    if len(queries) == 1:
+    if len(queries) == 1 and not isRanked:
         single_term_query(queries[0], inverted_index, URLs)
     else:
         or_postings = dict()
-
         for postings in postings_of_query_terms:
             for docID, tf in postings:
                 if docID not in or_postings:
@@ -73,7 +74,7 @@ def or_term_query(query_terms: str, inverted_index: dict, URLs: dict):
                 else:
                     or_postings[docID] += tf
 
-        utils.or_query_compute(queries, or_postings, inverted_index, URLs)
+        utils.or_query_compute(queries, or_postings, inverted_index, URLs, isRanked)
 
 def parse_query(query: str, queryType: str):
     '''
@@ -98,8 +99,8 @@ def parse_query(query: str, queryType: str):
     elif queryType == "3":
         assert len(query.split(" ")) > 1, "You have demanded an OR query but you have only entered one term."
         or_term_query(query, inverted_index, URLs)
-    # elif queryType == "4":
-    #     ranked_term_query(query, inverted_index, tf_dict_list)
+    elif queryType == "4":
+        or_term_query(query, inverted_index, URLs, True)
     end = time.time()
     print(f'\nDone! Your query was found in {"{:.3f}".format(end-start)} seconds')
 

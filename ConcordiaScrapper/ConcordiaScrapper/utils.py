@@ -100,24 +100,28 @@ def and_query_compute(query_terms: list, and_documents: dict, inverted_index: di
     index = 0
     for docID in and_documents:
         for query in query_terms:
+            tf = and_documents[docID]
             df = inverted_index[query][0]
             N = len(URLs)
-            score = tf_idf(and_documents[docID], df, N)
+            score = tf_idf(tf, df, N)
             scores[index] = (docID, scores[index][1] + score)
         index += 1
 
     scores = sorted(scores, reverse=True, key = lambda x: x[1])
     display_results(scores, URLs)
 
-def or_query_compute(query_terms: list, or_documents: list, inverted_index: dict, URLs: dict):
+def or_query_compute(query_terms: list, or_documents: list, inverted_index: dict, URLs: dict, isRanked = False):
     scores = [(0, 0)]*len(or_documents)
 
     index = 0
     for docID in or_documents:
         for query in query_terms:
+            tf = or_documents[docID]
             df = inverted_index[query][0]
             N = len(URLs)
-            score = tf_idf(or_documents[docID], df, N)
+            L_d = URLs[str(docID)][1]
+            L_avg = get_avg_doc_length()
+            score = BM25(df, tf, L_d, L_avg, N) if isRanked else tf_idf(tf, df, N)
             scores[index] = (docID, scores[index][1] + score)
         index += 1
 
