@@ -17,6 +17,16 @@ def open_dictionary_file(file: str) -> dict:
 
     return dictionary
 
+def display_results(scores: list, URLs: dict):
+    '''
+    Displays the top 15 scores.
+    '''
+    scores = sorted(scores, reverse=True, key = lambda x: x[1]) 
+    top = 15 if (len(scores) > 15) else len(scores)
+    print(f'The top {top} documents are:')
+    for i in range(top):
+        print(f'{i+1}. Document {scores[i][0]} with a score of {round(scores[i][1], 3)}\t- {URLs[str(scores[i][0])][0]}')
+
 def get_avg_doc_length():
     '''
     Gets the average length per document.
@@ -73,7 +83,7 @@ def tf_idf(tf, df, N):
 def single_query_compute(scoreType: str, postings_list: list, URLs: dict):
     scores = []
     isBM25 = scoreType == "1"
-
+ 
     for docID, tf in postings_list[1]:
             df = postings_list[0]
             L_d = URLs[str(docID)][1]
@@ -84,7 +94,23 @@ def single_query_compute(scoreType: str, postings_list: list, URLs: dict):
             scores.append((docID , score))
 
     scores = sorted(scores, reverse=True, key = lambda x: x[1]) 
-    top = 15 if (len(scores) > 15) else len(scores)
-    print(f'The top {top} documents are:')
-    for i in range(top):
-        print(f'{i+1}. Document {scores[i][0]} with a score of {round(scores[i][1], 3)}\t- {URLs[str(scores[i][0])][0]}')
+    display_results(scores, URLs)
+
+def and_query_compute(query_terms: list, scoreType: str, and_documents: dict, inverted_index: dict, URLs: dict):
+    isBM25 = scoreType == "1"
+    scores = [(0, 0)]*len(and_documents)
+
+    index = 0
+    for docID in and_documents:
+        for query in query_terms:
+            df = inverted_index[query][0]
+            L_d = URLs[str(docID)][1]
+            L_ave = get_avg_doc_length()
+            N = len(URLs)
+
+            score = BM25(df, and_documents[docID], L_d, L_ave, N) if isBM25 else tf_idf(tf, df, N)
+            scores[index] = (docID, scores[index][1] + score)
+        index += 1
+
+    scores = sorted(scores, reverse=True, key = lambda x: x[1])
+    display_results(scores, URLs)

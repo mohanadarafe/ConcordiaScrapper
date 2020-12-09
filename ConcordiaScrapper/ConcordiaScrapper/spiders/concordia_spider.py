@@ -72,7 +72,7 @@ class ConcordiaScrapper(CrawlSpider):
             if(token in dictionary and dictionary[token][0] >= 50):
                 continue
 
-            pair = ((self.docID, token_tf[token]))
+            pair = (self.docID, token_tf[token])
             if token not in dictionary:
                 dictionary[token] = [1, [pair]]
             else:
