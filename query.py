@@ -117,8 +117,8 @@ def _prompt_user():
 
         query = input("Please enter a query: ")
         while(not query): 
-            print("Please enter a valid query type")
-            queryType = input("Please enter a query type: ")
+            print("Please enter a valid query")
+            query = input("Please enter a query: ")
 
         parse_query(query, queryType)
 
