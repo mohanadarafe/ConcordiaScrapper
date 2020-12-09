@@ -13,21 +13,21 @@ conda activate scrapper
 ## Run
 The following commands are used to run different parts of the scrapper.
 
-### 1. Crawler
+### 1. Test Crawler
+Before starting to crawl the Concordia website, I decided to test Scrapy on my portfolio website. The crawler will go get a number of links from [my website](http://www.mohanadarafe.com/) & build an inverted index. To run the test, simple execute the following command:
+
+```
+python test.py
+```
+
+### 2. Concordia Crawler
 The crawler will go get a number of links from [Concordia's](https://www.concordia.ca/) website & build an inverted index.
 
 ```
 python run.py
 ```
 
-If you want to run the test file I have that parses my personal website:
-```
-scrapy crawl test -a limit=15
-
-limit: upper bound on the number of files to download
-```
-
-### 2. Query
+### 3. Query
 **Once you crawled the domain** you can run a query of your choice.
 
 ```

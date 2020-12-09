@@ -84,10 +84,10 @@ def parse_query(query: str, queryType: str):
     3 - OR
     4 - RANKED
     '''
-    assert os.path.isfile("visited_urls.json"), "Make sure you run the crawler first! Check README for instructions."
-    assert os.path.isfile("result.json"), "Make sure you run the crawler first! Check README for instructions."
-    inverted_index = utils.open_dictionary_file("result.json")
-    URLs = utils.open_dictionary_file("visited_urls.json")
+    assert os.path.isfile("results/visited_urls.json"), "Make sure you run the crawler first! Check README for instructions."
+    assert os.path.isfile("results/result.json"), "Make sure you run the crawler first! Check README for instructions."
+    inverted_index = utils.open_dictionary_file("results/result.json")
+    URLs = utils.open_dictionary_file("results/visited_urls.json")
 
     start = time.time()
     if queryType == "1":
@@ -130,4 +130,6 @@ def _prompt_user():
         keepGoing = True if inp == "y" else False
 
 if __name__ == "__main__":
+    assert os.path.isfile("results/result.json"), "Make sure you crawl first! Check README.md for instructions."
+    assert os.path.isfile("results/visited_urls.json"), "Make sure you crawl first! Check README.md for instructions."
     _prompt_user()

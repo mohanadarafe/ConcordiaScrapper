@@ -10,7 +10,7 @@ def open_dictionary_file(file: str) -> dict:
     with open(file, 'r') as json_file: 
         dictionary = json.load(json_file)
 
-    if 'result' in file:
+    if 'result.json' in file:
         assert len(dictionary) == 1, "The results rendered too many times."
         assert type(dictionary[0]) == dict, "The results did not run correctly."
         return dictionary[0]
@@ -31,7 +31,7 @@ def get_avg_doc_length():
     '''
     Gets the average length per document.
     '''
-    urls = open_dictionary_file("visited_urls.json")
+    urls = open_dictionary_file("results/visited_urls.json")
     totalDocLength = 0
     for url, docLength in urls.values():
         totalDocLength += docLength
