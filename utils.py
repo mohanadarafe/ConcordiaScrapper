@@ -65,7 +65,7 @@ def _denominator(k: float, b: float, L_d: float, L_ave: float, tf: float):
     product = k * (product1_1 + product1_2)
     return product + tf
 
-def BM25(df, tf, Ld, Lave, N, b=0.5, k=10) -> float:
+def BM25(df, tf, Ld, Lave, N, b=0.5, k=0.5) -> float:
     '''
     The following function computes the BM25 formula.
     '''
@@ -78,9 +78,15 @@ def BM25(df, tf, Ld, Lave, N, b=0.5, k=10) -> float:
     return product1 * product2
 
 def tf_idf(tf, df, N):
+    '''
+    Computes the tf.idf score of a document.
+    '''
     return tf*idf(N, df)
 
 def single_query_compute(postings_list: list, URLs: dict):
+    '''
+    Computes & displays the tf.idf score of a single query.
+    '''
     scores = []
     for docID, tf in postings_list[1]:
             df = postings_list[0]
@@ -95,6 +101,9 @@ def single_query_compute(postings_list: list, URLs: dict):
     display_results(scores, URLs)
 
 def and_query_compute(query_terms: list, and_documents: dict, inverted_index: dict, URLs: dict):
+    '''
+    Computes & displays the tf.idf score of an AND query.
+    '''
     scores = [(0, 0)]*len(and_documents)
 
     index = 0
@@ -111,6 +120,10 @@ def and_query_compute(query_terms: list, and_documents: dict, inverted_index: di
     display_results(scores, URLs)
 
 def or_query_compute(query_terms: list, or_documents: list, inverted_index: dict, URLs: dict, isRanked = False):
+    '''
+    Computes & displays score of an OR or RANKED query. If an OR query is
+    requested, we use the tf.idf score, otherwise, we compute the BM25 score.
+    '''
     scores = [(0, 0)]*len(or_documents)
 
     index = 0

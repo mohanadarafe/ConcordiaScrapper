@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, time
 from scrapy.crawler import CrawlerProcess
 from spiders.concordia_crawler import ConcordiaScrapper
 
@@ -26,8 +26,11 @@ process = CrawlerProcess(settings={
         },
     },
 })
+start = time.time()
 ConcordiaScrapper.file_limit = upperBound
 process.crawl(ConcordiaScrapper)
 process.start()
+end = time.time()
+print(f"Done! The domain was scrapped & the inverted index was created in {round(end-start, 3)} seconds.")
 assert os.path.isfile("result.json"), "Results file does not exist!"
 assert os.path.isfile("visited_urls.json"), "URLs file does not exist!"

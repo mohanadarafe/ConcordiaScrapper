@@ -19,8 +19,8 @@ class ConcordiaScrapper(CrawlSpider):
                 deny=(
                     r'^(?!https://www.concordia.ca).+',  # stay in concordia domain
                     r'^(https://www.concordia.ca/fr).+', # don't go to french page
-                    r'(page=[1-9][0-9]+)$',              # don't go over pages 7 (empty pages)   
-                    r'(sort=[A-z]+)$'                    # don't click on 'sort by'
+                    r'([A-z]+=[0-9]+)$',                 # don't go over pages 9 (empty pages)   
+                    r'([A-z]+=[A-z]+)$',                 # don't click on filters (e.g sort=title)
                 ), 
             ),
             callback='parse_item', 
@@ -33,6 +33,7 @@ class ConcordiaScrapper(CrawlSpider):
         if self.docID >= int(self.file_limit):
             if os.stat("result.json").st_size == 0:
                 self.save_urls()
+                self.strip_inverted_index(self.inverted_index)
                 yield self.inverted_index
             raise CloseSpider("Limit reached.")
 
@@ -69,9 +70,6 @@ class ConcordiaScrapper(CrawlSpider):
         The postings list is sorted in terms of tf.
         '''
         for token in token_tf.keys():
-            if(token in dictionary and dictionary[token][0] >= 50):
-                continue
-
             pair = (self.docID, token_tf[token])
             if token not in dictionary:
                 dictionary[token] = [1, [pair]]
@@ -79,6 +77,15 @@ class ConcordiaScrapper(CrawlSpider):
                 dictionary[token][1].append(pair)
                 dictionary[token][1] = sorted(dictionary[token][1], key = lambda x: x[1], reverse=True)
                 dictionary[token][0] += 1
+
+    def strip_inverted_index(self, inverted_index: dict) -> dict:
+        '''
+        Keeps the top 50 documents & strips the rest.
+        '''
+        for token in inverted_index.keys():
+            if len(inverted_index[token][1]) > 50:
+                inverted_index[token][1] = inverted_index[token][1][0:50]
+                inverted_index[token][0] = 50
 
     def save_urls(self):
         dictionary = dict()

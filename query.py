@@ -28,6 +28,7 @@ def and_term_query(query_terms: str, inverted_index: dict, URLs: dict):
             postings_of_query_terms.append(list(inverted_index[query][1]))
         else:
             print(f"The query term \"{query}\" was not found!")
+            return
 
     if len(queries) == 1:
         single_term_query(queries[0], inverted_index, URLs)
@@ -38,9 +39,14 @@ def and_term_query(query_terms: str, inverted_index: dict, URLs: dict):
         for postings in postings_of_query_terms:
             for docID, tf in postings:
                 if docID not in docs_dictionary:
-                    docs_dictionary[docID] = tf
+                    docs_dictionary[docID] = [1, tf]
                 else:
-                    and_postings[docID] = tf
+                    docs_dictionary[docID][0] += 1
+                    docs_dictionary[docID][1] += tf
+
+        for docID in docs_dictionary:
+            if docs_dictionary[docID][0] == len(queries):
+                and_postings[docID] = docs_dictionary[docID][1]
 
         utils.and_query_compute(queries, and_postings, inverted_index, URLs)
 

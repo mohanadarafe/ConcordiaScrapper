@@ -1,0 +1,137 @@
+---------------------
+| INFORMATION NEEDS |
+---------------------
+
+1. Which researchers at Concordia worked on COVID 19-related research?
+
+researchers AND COVID-19 (tf.idf)
+------------------------------
+The top 2 documents are:
+1. Document 3146 with a score of 60.0	- https://www.concordia.ca/news/stories/2020/04/09/montreal-researchers-lead-an-international-study-of-global-prevention-behaviours-and-responses-to-covid-19.html?rootnav=news/stories
+2. Document 3147 with a score of 60.0	- https://www.concordia.ca/news/stories/2020/04/09/montreal-researchers-lead-an-international-study-of-global-prevention-behaviours-and-responses-to-covid-19.html
+
+researchers OR COVID-19 (BM25)
+------------------------------
+The top 15 documents are:
+1. Document 2387 with a score of 5.82	- https://www.concordia.ca/coronavirus/updates.html
+2. Document 3146 with a score of 5.796	- https://www.concordia.ca/news/stories/2020/04/09/montreal-researchers-lead-an-international-study-of-global-prevention-behaviours-and-responses-to-covid-19.html?rootnav=news/stories
+3. Document 3147 with a score of 5.796	- https://www.concordia.ca/news/stories/2020/04/09/montreal-researchers-lead-an-international-study-of-global-prevention-behaviours-and-responses-to-covid-19.html
+4. Document 3880 with a score of 5.754	- https://www.concordia.ca/cunews/main/stories/2020/05/19/how-concordia-is-archiving-its-web-material-related-to-covid-19.html?rootnav=news/stories
+5. Document 3876 with a score of 5.739	- https://www.concordia.ca/cunews/main/stories/2020/05/19/how-concordia-is-archiving-its-web-material-related-to-covid-19.html?c=offices/archives
+6. Document 4223 with a score of 5.715	- https://www.concordia.ca/cunews/artsci/2020/04/22/how-the-covid-19-crisis-transformed-a-concordia-health-course.html?c=artsci/applied-human-sciences/news
+7. Document 2389 with a score of 5.701	- https://www.concordia.ca/coronavirus/return-to-campus/access.html
+8. Document 312 with a score of 5.698	- https://www.concordia.ca/cunews/main/stories/2013/04/17/concordia-to-host-2014-acfas-congress.html?rootnav=news/stories
+9. Document 757 with a score of 5.698	- https://www.concordia.ca/cunews/main/stories/2013/04/17/concordia-to-host-2014-acfas-congress.html?c=/news/media-relations/team/nadia-kherif
+10. Document 3893 with a score of 5.674	- https://www.concordia.ca/cunews/main/stories/2020/10/06/covid-19-is-changing-the-face-of-work-and-these-experts-want-to-make-sure-the-impacts-arent-lost-on-future-generations.html?rootnav=news/stories
+11. Document 263 with a score of 5.666	- https://www.concordia.ca/news/stories/2020/05/20/covid-19-is-putting-older-adults-mental-health-under-additional-stress-says-concordia-researcher.html?rootnav=news/stories
+12. Document 3142 with a score of 5.666	- https://www.concordia.ca/cunews/main/stories/2020/04/22/this-earth-day-6-concordians-discuss-the-question-of-sustainability-under-covid-19.html?rootnav=news/stories
+13. Document 313 with a score of 5.659	- https://www.concordia.ca/cunews/main/releases/2013/04/17/concordia-university-and-acfas--partners-for-the-advancement-of-research-in-the-francophonie.html
+14. Document 3878 with a score of 5.657	- https://www.concordia.ca/cunews/main/stories/2020/10/06/covid-19-is-changing-the-face-of-work-and-these-experts-want-to-make-sure-the-impacts-arent-lost-on-future-generations.html?c=offices/archives
+15. Document 3888 with a score of 5.655	- https://www.concordia.ca/offices/archives/covid-19-web-collection.html
+
+2. Which departments at Concordia have research in environmental issues, sustainability, energy and water conservation?
+
+research environmental sustainability energy water (tf.idf)
+---------------------------------------------------------------------------
+The top 2 documents are:
+1. Document 1346 with a score of 2330.0	- https://www.concordia.ca/artsci/research/loyola-sustainability/people.html
+2. Document 247 with a score of 810.0	- https://www.concordia.ca/cunews/main/stories/2015/04/14/sustainability-concordia-research-centres-future-earth.html?rootnav=news/stories
+
+
+research OR environmental OR sustainability OR energy OR water (tf.idf)
+-----------------------------------------------------------------------
+The top 15 documents are:
+1. Document 1346 with a score of 14.88	- https://www.concordia.ca/artsci/research/loyola-sustainability/people.html
+2. Document 247 with a score of 14.865	- https://www.concordia.ca/cunews/main/stories/2015/04/14/sustainability-concordia-research-centres-future-earth.html?rootnav=news/stories
+3. Document 1021 with a score of 14.852	- https://www.concordia.ca/faculty.html?fpid=alireza-nazemi
+4. Document 4167 with a score of 14.846	- https://www.concordia.ca/artsci/loyola-college-diversity-sustainability/sustainability-across-disciplines.html
+5. Document 4435 with a score of 14.817	- https://www.concordia.ca/ginacody/faculty/andreas-athienitis.html
+6. Document 1420 with a score of 14.803	- https://www.concordia.ca/offices/oor/contact.html
+7. Document 3236 with a score of 14.799	- https://www.concordia.ca/finearts/music/faculty.html?fpid=alissa-cheung
+8. Document 1819 with a score of 14.792	- https://www.concordia.ca/about/sustainability/get-involved/events-activities/awards.html
+9. Document 3332 with a score of 14.776	- https://www.concordia.ca/cunews/main/stories/2011/10/12/new-funding-for-seven-professors.html?c=research/nanoscience/news-events
+10. Document 1494 with a score of 14.767	- https://www.concordia.ca/academics/graduate/calendar/current/fasc/geog-phd.html
+11. Document 3343 with a score of 14.767	- https://www.concordia.ca/research/nanoscience/research/projects.html
+12. Document 1492 with a score of 14.76	- https://www.concordia.ca/academics/graduate/calendar/current/fasc/geog-msc.html
+13. Document 4577 with a score of 14.747	- https://www.concordia.ca/jmsb/faculty/caroline-roux.html
+14. Document 4078 with a score of 14.741	- https://www.concordia.ca/artsci/geography-planning-environment/programs/graduate/environmental-assessment-menv.html
+15. Document 1417 with a score of 14.74	- https://www.concordia.ca/research/for-researchers/ethics.html
+
+---------------------
+| CHALLENGE QUERIES |
+---------------------
+
+water AND management AND sustainability AND Concordia (tf.idf)
+------------------------------------------------------------
+1. Document 1346 with a score of 1104.0	- https://www.concordia.ca/artsci/research/loyola-sustainability/people.html
+
+
+water OR management OR sustainability OR Concordia (BM25)
+------------------------------------------------------------
+The top 15 documents are:
+1. Document 740 with a score of 11.923	- https://www.concordia.ca/events/conferences/acfas-en/committees.html
+2. Document 737 with a score of 11.918	- https://www.concordia.ca/events/conferences/acfas-fr/comites.html
+3. Document 1819 with a score of 11.911	- https://www.concordia.ca/about/sustainability/get-involved/events-activities/awards.html
+4. Document 1829 with a score of 11.884	- https://www.concordia.ca/about/sustainability/sustainability-initiatives/student-initiatives.html
+5. Document 2387 with a score of 11.865	- https://www.concordia.ca/coronavirus/updates.html
+6. Document 237 with a score of 11.864	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/environment
+7. Document 4167 with a score of 11.862	- https://www.concordia.ca/artsci/loyola-college-diversity-sustainability/sustainability-across-disciplines.html
+8. Document 1007 with a score of 11.857	- https://www.concordia.ca/news/topic.html?topic=topics:research_subjects/climate_change
+9. Document 1012 with a score of 11.857	- https://www.concordia.ca/news/topic.html?page=1&topic=topics:research_subjects/climate_change
+10. Document 2746 with a score of 11.851	- https://www.concordia.ca/artsci/polisci/wssr/about/montreal-experience.html
+11. Document 536 with a score of 11.845	- https://www.concordia.ca/hr/dept/employee-labour-relations/labour-agreements-collective-bargaining.html
+12. Document 128 with a score of 11.841	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/engineering
+13. Document 1516 with a score of 11.84	- https://www.concordia.ca/about/quartier-concordia/chronology.html
+14. Document 678 with a score of 11.839	- https://www.concordia.ca/directories/departments.html
+15. Document 1346 with a score of 11.839	- https://www.concordia.ca/artsci/research/loyola-sustainability/people.html
+
+
+Concordia COVID-19 faculty (tf.idf)
+-------------------------------------------
+No documents found.
+
+
+Concordia OR COVID-19 OR faculty (BM25)
+---------------------------------------
+The top 15 documents are:
+1. Document 740 with a score of 8.942	- https://www.concordia.ca/events/conferences/acfas-en/committees.html
+2. Document 737 with a score of 8.938	- https://www.concordia.ca/events/conferences/acfas-fr/comites.html
+3. Document 2387 with a score of 8.926	- https://www.concordia.ca/coronavirus/updates.html
+4. Document 3876 with a score of 8.903	- https://www.concordia.ca/cunews/main/stories/2020/05/19/how-concordia-is-archiving-its-web-material-related-to-covid-19.html?c=offices/archives
+5. Document 3917 with a score of 8.898	- https://www.concordia.ca/cunews/offices/vpaer/aar/2018/01/30/learn-about-the-campaign-for-concordia.html?rootnav=news/stories
+6. Document 4277 with a score of 8.893	- https://www.concordia.ca/cunews/main/stories/2020/06/30/concordia-honours-8-faculty-for-their-academic-leadership-career-achievements-and-mentorship.html?rootnav=news/stories
+7. Document 237 with a score of 8.893	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/environment
+8. Document 1007 with a score of 8.892	- https://www.concordia.ca/news/topic.html?topic=topics:research_subjects/climate_change
+9. Document 1012 with a score of 8.892	- https://www.concordia.ca/news/topic.html?page=1&topic=topics:research_subjects/climate_change
+10. Document 2746 with a score of 8.888	- https://www.concordia.ca/artsci/polisci/wssr/about/montreal-experience.html
+11. Document 1819 with a score of 8.888	- https://www.concordia.ca/about/sustainability/get-involved/events-activities/awards.html
+12. Document 536 with a score of 8.884	- https://www.concordia.ca/hr/dept/employee-labour-relations/labour-agreements-collective-bargaining.html
+13. Document 1829 with a score of 8.882	- https://www.concordia.ca/about/sustainability/sustainability-initiatives/student-initiatives.html
+14. Document 128 with a score of 8.881	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/engineering
+15. Document 1516 with a score of 8.88	- https://www.concordia.ca/about/quartier-concordia/chronology.html
+
+
+
+SARS-CoV AND Concordia AND faculty (tf.idf)
+--------------------------------------------
+No documents found.
+
+
+SARS-CoV OR Concordia OR faculty (BM25)
+--------------------------------------------
+The top 15 documents are:
+1. Document 740 with a score of 5.961	- https://www.concordia.ca/events/conferences/acfas-en/committees.html
+2. Document 737 with a score of 5.959	- https://www.concordia.ca/events/conferences/acfas-fr/comites.html
+3. Document 2387 with a score of 5.932	- https://www.concordia.ca/coronavirus/updates.html
+4. Document 3917 with a score of 5.932	- https://www.concordia.ca/cunews/offices/vpaer/aar/2018/01/30/learn-about-the-campaign-for-concordia.html?rootnav=news/stories
+5. Document 4277 with a score of 5.929	- https://www.concordia.ca/cunews/main/stories/2020/06/30/concordia-honours-8-faculty-for-their-academic-leadership-career-achievements-and-mentorship.html?rootnav=news/stories
+6. Document 237 with a score of 5.929	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/environment
+7. Document 1007 with a score of 5.928	- https://www.concordia.ca/news/topic.html?topic=topics:research_subjects/climate_change
+8. Document 1012 with a score of 5.928	- https://www.concordia.ca/news/topic.html?page=1&topic=topics:research_subjects/climate_change
+9. Document 2746 with a score of 5.926	- https://www.concordia.ca/artsci/polisci/wssr/about/montreal-experience.html
+10. Document 1819 with a score of 5.925	- https://www.concordia.ca/about/sustainability/get-involved/events-activities/awards.html
+11. Document 536 with a score of 5.923	- https://www.concordia.ca/hr/dept/employee-labour-relations/labour-agreements-collective-bargaining.html
+12. Document 1829 with a score of 5.921	- https://www.concordia.ca/about/sustainability/sustainability-initiatives/student-initiatives.html
+13. Document 128 with a score of 5.921	- https://www.concordia.ca/news/topic.html?topic=topics:academic_disciplines/engineering
+14. Document 1516 with a score of 5.92	- https://www.concordia.ca/about/quartier-concordia/chronology.html
+15. Document 678 with a score of 5.92	- https://www.concordia.ca/directories/departments.html
